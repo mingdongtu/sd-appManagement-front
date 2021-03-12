@@ -1,16 +1,17 @@
 <template>
-  <router-view></router-view>
+ <router-view></router-view>
 </template>
 
-<script>
-// import Home from './view/Home/index.vue'
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
 
-export default {
-  name: 'App',
+
+@Options({
   components: {
-    // Home
-  }
-}
+   
+  },
+})
+export default class App extends Vue {}
 </script>
 
 <style>
@@ -20,6 +21,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+
 }
 </style>
