@@ -1,33 +1,30 @@
 
 <template>
     <el-row :gutter="20">
-  <el-col :span="12" :offset="6"><div class="grid-content bg-purple">
-      <el-form  :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
+  <el-col :span="8" :offset="8"><div class="grid-content bg-purple">
+      <el-form  :model="userInfo" ref="userInfo" label-width="100px" class="demo-dynamic">
   <el-form-item
-    prop="email"
+    prop="username"
     label="账号"
     
     :rules="[
-      { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+      { required: true, message: '请输入账号', trigger: 'blur' }
     ]"
   >
-    <el-input v-model="dynamicValidateForm.email"></el-input>
+    <el-input v-model="userInfo.username" ></el-input>
   </el-form-item>
-  <el-form-item
-    v-for="(domain, index) in dynamicValidateForm.domains"
-    :label="'密码'"
-    :key="domain.key"
-    :prop="'domains.' + index + '.value'"
-    :rules="{
-      required: true, message: '域名不能为空', trigger: 'blur'
-    }"
+   <el-form-item
+    prop="password"
+    label="密码"
+    
+    :rules="[
+      { required: true, message: '请输入密码', trigger: 'blur' }
+    ]"
   >
-    <el-input v-model="domain.value"></el-input>
+    <el-input v-model="userInfo.password" ></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="submitForm('dynamicValidateForm')">登录</el-button>
-    
+    <el-button type="primary" @click="submitForm()">登录</el-button>
     
   </el-form-item>
 
@@ -38,42 +35,50 @@
 
 </template>
 
-<script>
-  export default {
+<script lang='ts'>
+
+interface userInfo {
+    password:string,
+    username:string
+}
+// 使用vue3语法
+  export default{
+   
     data() {
       return {
-        dynamicValidateForm: {
-          domains: [{
-            value: ''
-          }],
-          email: ''
-        }
+        userInfo: {
+          password:'',
+          username: ''
+        } as userInfo
       };
     },
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+      submitForm() {
+        // this.$refs[formName].validate((valid:Boolean) => {
+        //   if (valid) {
+        //     alert('submit!');
+        //   } else {
+        //     console.log('error submit!!');
+        //     return false;
+        //   }
+        // });
+        this.$refs['userInfo'].validate((valid:Boolean)=>{
+              if(valid){
+                   this.$router.push('/')
+              }
+        })
+      //  this.$router.push('/')
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      removeDomain(item) {
-        var index = this.dynamicValidateForm.domains.indexOf(item)
+    
+      removeDomain(item:any) {
+        var index = this.userInfo.domains.indexOf(item)
         if (index !== -1) {
-          this.dynamicValidateForm.domains.splice(index, 1)
+          this.userInfo.domains.splice(index, 1)
         }
       },
       addDomain() {
-        this.dynamicValidateForm.domains.push({
-          value: '',
-          key: Date.now()
+        this.userInfo.domains.push({
+         key: Date.now()
         });
       }
     }
