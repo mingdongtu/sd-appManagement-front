@@ -14,7 +14,8 @@
       </div>
     </template>
     <template #operation="{  }">
-      <a>Delete</a>
+      <a-button type="primary" style="margin-right:10px">详情</a-button>
+      <a-button type="primary">编辑</a-button>
     </template>
   </a-table>
 </template>
@@ -48,6 +49,10 @@ export default defineComponent({
         dataIndex: 'edition',
       },
       {
+        title: '下载方式',
+        dataIndex: 'dowloadType',
+      },
+      {
         title: '更新时间',
         dataIndex: 'updateTime',
       },
@@ -60,15 +65,17 @@ export default defineComponent({
     const dataSource: Ref<DataItem[]> = ref([
       {
         key: '0',
-        name: 'Edward King 0',
+        name: '合伙人APP',
         edition: 32,
-        updateTime: 'London, Park Lane no. 0',
+        updateTime: '2021/03/09',
+        dowloadType:"pgyer.com/agentBackendiOS"
       },
       {
         key: '1',
         name: 'Edward King 1',
-        edition: 32,
-        updateTime: 'London, Park Lane no. 1',
+         edition: 33,
+        updateTime: '2021/03/10',
+         dowloadType:"pgyer.com/agentBackendiOS"
       },
     ]);
     const count = computed(() => dataSource.value.length + 1);

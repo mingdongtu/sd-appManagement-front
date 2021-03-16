@@ -1,6 +1,6 @@
 <template>
 
-    <a-layout >
+    <a-layout  class='main'>
     <a-layout-content>
     <a-row>
       <a-col :span="8" :offset="8">
@@ -20,7 +20,7 @@
       <a-form-item required has-feedback label="密码" name="pass">
           <a-input v-model:value="formState.pass" type="password" autocomplete="off" />
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+        <a-form-item :wrapper-col="{ span: 14, offset: 9 }">
           <a-button type="primary" html-type="submit">登录</a-button>
           <!-- <a-button style="margin-left: 10px" @click="resetForm">Reset</a-button> -->
         </a-form-item>
@@ -127,5 +127,12 @@ export default defineComponent({
   }
   .ant-form-item-control{
    width:300px}
+   .main{
+      width:100vw;
+    height:100vh;
+    background: url('https://static.sdbattery.com/inner/inner_login_bg.png') no-repeat;
+    background-size:100% 100%;
+    
+   }
 </style>
 
