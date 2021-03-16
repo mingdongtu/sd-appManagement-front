@@ -14,8 +14,8 @@
         @finishFailed="handleFinishFailed"
       >
       
-        <a-form-item has-feedback label="用户" name="checkPass">
-          <a-input  v-model:value="formState.checkPass" type="password" autocomplete="off" />
+        <a-form-item required has-feedback label="用户" name="checkPass">
+          <a-input  v-model:value="formState.checkPass"  type="password" autocomplete="off" />
         </a-form-item>
       <a-form-item required has-feedback label="密码" name="pass">
           <a-input v-model:value="formState.pass" type="password" autocomplete="off" />
@@ -134,5 +134,8 @@ export default defineComponent({
     background-size:100% 100%;
     
    }
+  .ant-form-item-required{
+     color: #fff;
+  }
 </style>
 
