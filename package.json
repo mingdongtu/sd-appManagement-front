@@ -8,6 +8,7 @@
     "start": "vue-cli-service serve"
   },
   "dependencies": {
+    "@types/lodash-es": "^4.17.4",
     "ant-design-vue": "^2.0.1",
     "core-js": "^3.8.3",
     "element-plus": "^1.0.2-beta.33",

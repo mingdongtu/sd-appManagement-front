@@ -1,5 +1,5 @@
 <template>
-  <a-button class="editable-add-btn" @click="handleAdd" style="margin-bottom: 8px">Add</a-button>
+  
   <a-table bordered :data-source="dataSource" :columns="columns">
     <template #name="{ text, record }">
       <div class="editable-cell">
@@ -13,14 +13,8 @@
         </div>
       </div>
     </template>
-    <template #operation="{ record }">
-      <a-popconfirm
-        v-if="dataSource.length"
-        title="Sure to delete?"
-        @confirm="onDelete(record.key)"
-      >
-        <a>Delete</a>
-      </a-popconfirm>
+    <template #operation="{  }">
+      <a>Delete</a>
     </template>
   </a-table>
 </template>
@@ -32,8 +26,8 @@ import { cloneDeep } from 'lodash-es';
 interface DataItem {
   key: string;
   name: string;
-  age: number;
-  address: string;
+  edition: number;
+  updateTime: string;
 }
 
 export default defineComponent({
@@ -44,21 +38,21 @@ export default defineComponent({
   setup() {
     const columns = [
       {
-        title: 'name',
+        title: '应用名称',
         dataIndex: 'name',
         width: '30%',
         slots: { customRender: 'name' },
       },
       {
-        title: 'age',
-        dataIndex: 'age',
+        title: '版本',
+        dataIndex: 'edition',
       },
       {
-        title: 'address',
-        dataIndex: 'address',
+        title: '更新时间',
+        dataIndex: 'updateTime',
       },
       {
-        title: 'operation',
+        title: '操作',
         dataIndex: 'operation',
         slots: { customRender: 'operation' },
       },
@@ -67,14 +61,14 @@ export default defineComponent({
       {
         key: '0',
         name: 'Edward King 0',
-        age: 32,
-        address: 'London, Park Lane no. 0',
+        edition: 32,
+        updateTime: 'London, Park Lane no. 0',
       },
       {
         key: '1',
         name: 'Edward King 1',
-        age: 32,
-        address: 'London, Park Lane no. 1',
+        edition: 32,
+        updateTime: 'London, Park Lane no. 1',
       },
     ]);
     const count = computed(() => dataSource.value.length + 1);
@@ -88,23 +82,11 @@ export default defineComponent({
       delete editableData[key];
     };
 
-    const onDelete = (key: string) => {
-      dataSource.value = dataSource.value.filter(item => item.key !== key);
-    };
-    const handleAdd = () => {
-      const newData = {
-        key: `${count.value}`,
-        name: `Edward King ${count.value}`,
-        age: 32,
-        address: `London, Park Lane no. ${count.value}`,
-      };
-      dataSource.value.push(newData);
-    };
-
+  
+    
     return {
       columns,
-      onDelete,
-      handleAdd,
+     
       dataSource,
       editableData,
       count,
