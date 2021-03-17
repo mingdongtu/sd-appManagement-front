@@ -1,17 +1,30 @@
 <template>
   
   <a-table bordered :data-source="dataSource" :columns="columns">
-    <template #name="{ text, record }">
+    <template #application_name="{ text,record }">
       <div class="editable-cell">
-        <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-          <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
-          <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
-        </div>
-        <div v-else class="editable-cell-text-wrapper">
-          {{ text || ' ' }}
-          <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
-        </div>
+       <img :src=record.application_logo alt="">
+       <div>
+          <p> {{text}}</p>
+          <p>{{record.application_type}}</p>
+       </div>
       </div>
+    </template>
+    <template #dowload_type='{record}'>
+       <span  style='margin-right:5px'>  {{record.dowload_type}}</span>
+      
+        <a-popover placement="bottom">
+        <template #content>
+          <img style='width:100px;height:100px' src="https://www.pgyer.com/app/qrcode/agentBackendiOS" alt="">
+        </template>
+        <template #title>
+          <span>扫描二维码下载</span>
+        </template>
+
+        <a href="" v-if='record.application_type=="Android"'> <AndroidOutlined/></a>
+        <a href="" v-else> <AppleOutlined/></a>
+      </a-popover>
+
     </template>
     <template #operation="{  }">
       <a-button type="primary" style="margin-right:10px">详情</a-button>
@@ -21,28 +34,32 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, reactive, Ref, ref, UnwrapRef } from 'vue';
-import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
+import {  AndroidOutlined,AppleOutlined} from '@ant-design/icons-vue';
 import { cloneDeep } from 'lodash-es';
 
 interface DataItem {
   key: string;
-  name: string;
+  application_name: string;
   edition: number;
-  updateTime: string;
+  update_time: string;
+  dowload_type:string;
+  application_type:string;
+  application_logo:string;
 }
 
 export default defineComponent({
   components: {
-    CheckOutlined,
-    EditOutlined,
+    AndroidOutlined,
+    AppleOutlined
+    
   },
   setup() {
     const columns = [
       {
         title: '应用名称',
-        dataIndex: 'name',
+        dataIndex: 'application_name',
         width: '30%',
-        slots: { customRender: 'name' },
+        slots: { customRender: 'application_name' },
       },
       {
         title: '版本',
@@ -50,11 +67,12 @@ export default defineComponent({
       },
       {
         title: '下载方式',
-        dataIndex: 'dowloadType',
+        dataIndex: 'dowload_type',
+        slots:{customRender:'dowload_type'}
       },
       {
         title: '更新时间',
-        dataIndex: 'updateTime',
+        dataIndex: 'update_time',
       },
       {
         title: '操作',
@@ -65,17 +83,21 @@ export default defineComponent({
     const dataSource: Ref<DataItem[]> = ref([
       {
         key: '0',
-        name: '合伙人APP',
+        application_name: '合伙人APP',
         edition: 32,
-        updateTime: '2021/03/09',
-        dowloadType:"pgyer.com/agentBackendiOS"
+        update_time: '2021/03/09',
+        dowload_type:"pgyer.com/agentBackendiOS",
+        application_type:'iOS',
+        application_logo:'https://cdn-app-icon.pgyer.com/5/f/5/6/0/5f560d647888ec264657eb6ae073a44d?x-oss-process=image/resize,m_lfit,h_60,w_60/format,jpg'
       },
       {
         key: '1',
-        name: 'Edward King 1',
+        application_name: '合伙人APP',
          edition: 33,
-        updateTime: '2021/03/10',
-         dowloadType:"pgyer.com/agentBackendiOS"
+        update_time: '2021/03/10',
+         dowload_type:"pgyer.com/agentBackendiOS",
+          application_type:'Android',
+            application_logo:'https://cdn-app-icon.pgyer.com/5/f/5/6/0/5f560d647888ec264657eb6ae073a44d?x-oss-process=image/resize,m_lfit,h_60,w_60/format,jpg'
       },
     ]);
     const count = computed(() => dataSource.value.length + 1);
@@ -103,45 +125,25 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .editable-cell {
   position: relative;
-  .editable-cell-input-wrapper,
-  .editable-cell-text-wrapper {
-    padding-right: 24px;
+ display: flex;
+ align-items: center;
+ img{
+      margin-right:10px;
+   }
+    >div{
+        display: flex;
+        flex-direction: column;
+        p{
+           margin:0;
+           font-size: 12px;
+         }
+         p:nth-of-type(1){
+             margin-bottom: 5px;
+          }
+       }
   }
 
-  .editable-cell-text-wrapper {
-    padding: 5px 24px 5px 5px;
-  }
-
-  .editable-cell-icon,
-  .editable-cell-icon-check {
-    position: absolute;
-    right: 0;
-    width: 20px;
-    cursor: pointer;
-  }
-
-  .editable-cell-icon {
-    margin-top: 4px;
-    display: none;
-  }
-
-  .editable-cell-icon-check {
-    line-height: 28px;
-  }
-
-  .editable-cell-icon:hover,
-  .editable-cell-icon-check:hover {
-    color: #108ee9;
-  }
-
-  .editable-add-btn {
-    margin-bottom: 8px;
-  }
-}
-.editable-cell:hover .editable-cell-icon {
-  display: inline-block;
-}
 </style>
