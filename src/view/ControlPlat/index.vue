@@ -1,141 +1,147 @@
-
 <template>
-
-  <el-table
-    :data="tableData"
-    style="width: 100%">
-    <el-table-column
-     
-      label="应用名称"
-      width="180">
-      <!---潜入复杂内容-->
-      <template #default="scope">
-        <div class='row-1'>
-            <img src="https://cdn-app-icon.pgyer.com/e/7/6/2/4/e762494b33042bd7beaccf73ef338022?x-oss-process=image/resize,m_lfit,h_60,w_60/format,jpg" alt="">
-            <div style='display:inline-block'>
-                  <p>{{scope.row.name}}</p>  
-                  <p>{{scope.row.system}}</p>      
-            </div>
-        </div>
-      </template>
-    </el-table-column>
   
-    <el-table-column
-      label="版本"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="downloadType"
-      label="下载方式"
-      >
-       <template #default="scope">
-       <span>{{scope.row.edition}}</span>
-      <i class='el-icon-s-promotion' ></i>
-       </template>
-      
-    </el-table-column>
-      <el-table-column
-     
-      prop="updateTime"
-      label="更新时间"
-      width="150">
-    </el-table-column>
- 
-    <el-table-column
-      fixed="right"
-      label="操作"
-      width="180">
-      <template #default="scope">
-         
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDetail(scope.$index, scope.row)">详情</el-button>
-           <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
-
+  <a-table bordered :data-source="dataSource" :columns="columns">
+    <template #name="{ text, record }">
+      <div class="editable-cell">
+        <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
+          <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)" />
+          <check-outlined class="editable-cell-icon-check" @click="save(record.key)" />
+        </div>
+        <div v-else class="editable-cell-text-wrapper">
+          {{ text || ' ' }}
+          <edit-outlined class="editable-cell-icon" @click="edit(record.key)" />
+        </div>
+      </div>
+    </template>
+    <template #operation="{  }">
+      <a-button type="primary" style="margin-right:10px">详情</a-button>
+      <a-button type="primary">编辑</a-button>
+    </template>
+  </a-table>
 </template>
+<script lang="ts">
+import { computed, defineComponent, reactive, Ref, ref, UnwrapRef } from 'vue';
+import { CheckOutlined, EditOutlined } from '@ant-design/icons-vue';
+import { cloneDeep } from 'lodash-es';
 
-<script lang='ts'>
-  export default {
-    methods: {
-      handleClick(row:any) {
-        console.log(row);
-      },
-      handleEdit(index:Number,row:any){
-          console.log(index,row)
-
-      },
-      handleDetail(index:Number,row:any){
-           console.log(index,row)
-           this.$router.push('/appDetail')
-      }
-    },
-
-
-    data() {
-      return {
-        tableData: [{
-          name: '合伙人APP',
-         updateTime: '2016-05-02 18:02',
-         system:'安卓',
-          edition: 'V3.4.1',
-          downloadType: 'pgyer.com/sdbatterypy',
-          qrCodeImg:'https://www.pgyer.com/app/qrcode/sdbatterypy',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          name: '合伙人APP',
-          updateTime: '2016-05-02 18:02',
-          system:'安卓',
-          edition: 'V3.4.1',
-          downloadType: 'pgyer.com/sdbatterypy',
-          qrCodeImg:'https://www.pgyer.com/app/qrcode/sdbatterypy',
-          address: '上海市普陀区金沙江路 1517 弄',
-          zip: 200333
-        }, {
-          name: '星云APP',
-         updateTime: '2016-05-02 18:02',
-          system:'安卓',
-          edition: 'V3.4.1',
-          downloadType: 'pgyer.com/sdbatterypy',
-          qrCodeImg:'https://www.pgyer.com/app/qrcode/sdbatterypy',
-          address: '上海市普陀区金沙江路 1519 弄',
-          zip: 200333
-        }, {
-          name: 'IBO',
-         updateTime: '2016-05-02 18:02',
-          system:'安卓',
-          edition: 'V3.4.1',
-          downloadType: 'pgyer.com/sdbatterypy',
-          qrCodeImg:'https://www.pgyer.com/app/qrcode/sdbatterypy',
-          address: '上海市普陀区金沙江路 1516 弄',
-          zip: 200333
-        }]
-      }
-    }
-  }
-</script>
-
-<style >
-.row-1>img{
-         width:40px;
-         height: 40px;
-         margin-right: 10px;
-     }
-.row-1>div>p{
-   margin:0;
+interface DataItem {
+  key: string;
+  name: string;
+  edition: number;
+  updateTime: string;
 }
-.row-1>div>p:nth-of-type(1){
-    font-size:14px;
-    font-weight: bold;
-}
-.row-1>div>p:nth-of-type(2){
-    font-size:12px;
+
+export default defineComponent({
+  components: {
+    CheckOutlined,
+    EditOutlined,
+  },
+  setup() {
+    const columns = [
+      {
+        title: '应用名称',
+        dataIndex: 'name',
+        width: '30%',
+        slots: { customRender: 'name' },
+      },
+      {
+        title: '版本',
+        dataIndex: 'edition',
+      },
+      {
+        title: '下载方式',
+        dataIndex: 'dowloadType',
+      },
+      {
+        title: '更新时间',
+        dataIndex: 'updateTime',
+      },
+      {
+        title: '操作',
+        dataIndex: 'operation',
+        slots: { customRender: 'operation' },
+      },
+    ];
+    const dataSource: Ref<DataItem[]> = ref([
+      {
+        key: '0',
+        name: '合伙人APP',
+        edition: 32,
+        updateTime: '2021/03/09',
+        dowloadType:"pgyer.com/agentBackendiOS"
+      },
+      {
+        key: '1',
+        name: 'Edward King 1',
+         edition: 33,
+        updateTime: '2021/03/10',
+         dowloadType:"pgyer.com/agentBackendiOS"
+      },
+    ]);
+    const count = computed(() => dataSource.value.length + 1);
+    const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
+
+    const edit = (key: string) => {
+      editableData[key] = cloneDeep(dataSource.value.filter(item => key === item.key)[0]);
+    };
+    const save = (key: string) => {
+      Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
+      delete editableData[key];
+    };
+
+  
     
+    return {
+      columns,
+     
+      dataSource,
+      editableData,
+      count,
+      edit,
+      save,
+    };
+  },
+});
+</script>
+<style lang="less">
+.editable-cell {
+  position: relative;
+  .editable-cell-input-wrapper,
+  .editable-cell-text-wrapper {
+    padding-right: 24px;
+  }
+
+  .editable-cell-text-wrapper {
+    padding: 5px 24px 5px 5px;
+  }
+
+  .editable-cell-icon,
+  .editable-cell-icon-check {
+    position: absolute;
+    right: 0;
+    width: 20px;
+    cursor: pointer;
+  }
+
+  .editable-cell-icon {
+    margin-top: 4px;
+    display: none;
+  }
+
+  .editable-cell-icon-check {
+    line-height: 28px;
+  }
+
+  .editable-cell-icon:hover,
+  .editable-cell-icon-check:hover {
+    color: #108ee9;
+  }
+
+  .editable-add-btn {
+    margin-bottom: 8px;
+  }
+}
+.editable-cell:hover .editable-cell-icon {
+  display: inline-block;
 }
 </style>
