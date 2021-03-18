@@ -39,12 +39,32 @@
         />
          <a-row>
      <a-col :span="2" :offset="22">
-      <SettingOutlined style="margin-right:20px" />
-     <a-avatar>
+      <!-- <SettingOutlined style="margin-right:20px" /> -->
+        <a-popover placement="bottom">
+        <template #content>
+          <div class='user'>
+             <UserOutlined/>
+             <span>基本资料</span>
+          </div>
+          <div class='log-out'>
+            <LoginOutlined/>
+            <span>退出登陆</span>
+          </div>
+        </template>
+        <template #title>
+           <a-avatar>
         <template #icon>
           <UserOutlined />
         </template>
       </a-avatar>
+        </template>
+       <a-avatar>
+        <template #icon>
+          <UserOutlined />
+        </template>
+      </a-avatar>
+      </a-popover>
+    
       </a-col>  
    </a-row>
        
@@ -59,14 +79,15 @@
   </a-layout>
 </template>
 <script lang="ts">
-import { BankOutlined,AppstoreOutlined,UserOutlined,SettingOutlined} from '@ant-design/icons-vue';
+import { BankOutlined,AppstoreOutlined,UserOutlined,LoginOutlined} from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
   components: {
         BankOutlined,
     AppstoreOutlined,
     UserOutlined,
-    SettingOutlined
+    LoginOutlined
+    
   },
   setup() {
     return {
@@ -83,7 +104,7 @@ export default defineComponent({
   }
 });
 </script>
-<style>
+<style scoped lang='less'>
 #components-layout-demo-top-side-2 .logo {
   float: left;
   width: 120px;
@@ -100,4 +121,21 @@ export default defineComponent({
 .site-layout-background {
   background: #fff;
 }
+.user{
+  display:flex;
+  color: rgb(165, 161, 161);
+  align-items: center;
+   >span{
+       margin-left:5px;
+     }
+  }
+  .log-out{
+       margin-top:10px;
+       display: flex;
+         color: rgb(165, 161, 161);
+       align-items: center;
+       >span{
+          margin-left: 5px;
+       }
+    }
 </style>
