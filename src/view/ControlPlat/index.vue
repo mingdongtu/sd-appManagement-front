@@ -33,9 +33,9 @@
   </a-table>
 </template>
 <script lang="ts">
-import { computed, defineComponent, reactive, Ref, ref, UnwrapRef } from 'vue';
+import {  defineComponent, Ref, ref } from 'vue';
 import {  AndroidOutlined,AppleOutlined} from '@ant-design/icons-vue';
-import { cloneDeep } from 'lodash-es';
+import {  } from 'lodash-es';
 
 interface DataItem {
   key: string;
@@ -85,7 +85,7 @@ export default defineComponent({
         key: '0',
         application_name: '合伙人APP',
         edition: 32,
-        update_time: '2021/03/09',
+        update_time: '2021-03-09 17:08:08',
         dowload_type:"pgyer.com/agentBackendiOS",
         application_type:'iOS',
         application_logo:'https://cdn-app-icon.pgyer.com/5/f/5/6/0/5f560d647888ec264657eb6ae073a44d?x-oss-process=image/resize,m_lfit,h_60,w_60/format,jpg'
@@ -94,33 +94,23 @@ export default defineComponent({
         key: '1',
         application_name: '合伙人APP',
          edition: 33,
-        update_time: '2021/03/10',
+        update_time: '2021-03-09 17:08:08',
          dowload_type:"pgyer.com/agentBackendiOS",
           application_type:'Android',
             application_logo:'https://cdn-app-icon.pgyer.com/5/f/5/6/0/5f560d647888ec264657eb6ae073a44d?x-oss-process=image/resize,m_lfit,h_60,w_60/format,jpg'
       },
     ]);
-    const count = computed(() => dataSource.value.length + 1);
-    const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
+   
+    
 
-    const edit = (key: string) => {
-      editableData[key] = cloneDeep(dataSource.value.filter(item => key === item.key)[0]);
-    };
-    const save = (key: string) => {
-      Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
-      delete editableData[key];
-    };
+  
+   
 
   
     
     return {
       columns,
-     
-      dataSource,
-      editableData,
-      count,
-      edit,
-      save,
+      dataSource
     };
   },
 });

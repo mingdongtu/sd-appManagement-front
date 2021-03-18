@@ -3,6 +3,8 @@ import Home from './../view/Home/index.vue';
 import Login from "./../view/Login/index.vue";
 import ControlPlat from "./../view/ControlPlat/index.vue";
 import AppDetail from "./../view/AppDetail/index.vue";
+import UpLoad from './../view/UpLoad/index.vue'
+
 
 const routes = [
   {
@@ -16,6 +18,11 @@ const routes = [
       {
         path: '/appDetail',
         component: AppDetail
+      },
+      {
+        path:'/upLoad',
+        component:UpLoad
+
       }
     ]
   },
