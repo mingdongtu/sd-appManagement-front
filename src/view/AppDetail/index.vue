@@ -14,7 +14,7 @@
            </div>
       </a-layout-content>
       <a-layout-sider  style="background:rgb(243,245,247);margin-top:20px" theme="light" >
-              <a-button type="primary" shape="round" :size="size">
+              <a-button @click="handleUpdate" type="primary" shape="round" :size="size">
             <template #icon>
             <RedoOutlined />
             更新
@@ -143,6 +143,11 @@ export default defineComponent({
       columns,
     };
   },
+  methods:{
+     handleUpdate(){
+          this.$router.push('/upLoad')
+     }
+  }
 });
 </script>
 

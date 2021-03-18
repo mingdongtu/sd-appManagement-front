@@ -1,27 +1,16 @@
 <template>
   <a-layout style="height:100vh">
-    <a-layout-header class="header">
-      <div class="logo" />
-      <a-menu
-        theme="dark"
-        mode="horizontal"
-        v-model:selectedKeys="selectedKeys1"
-        :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item key="1">向日葵</a-menu-item>
-        <a-menu-item key="2">控制台</a-menu-item>
-        <a-menu-item key="3">内测分发</a-menu-item>
-      </a-menu>
-    </a-layout-header>
+    
     <a-layout>
-      <a-layout-sider width="200" style="background: #fff">
+      <a-layout-sider width="200" style="background: #fff" collapsible>
         <a-menu
           mode="inline"
+          theme="dark"
           v-model:selectedKeys="selectedKeys2"
           v-model:openKeys="openKeys"
           :style="{ height: '100%', borderRight: 0 }"
         >
-        <a-menu-item key="9">
+        <a-menu-item key="9" @click="handleHome">
           <BankOutlined/>
           <span>首页</span>
         </a-menu-item>
@@ -41,12 +30,27 @@
           
         </a-menu>
       </a-layout-sider>
-      <a-layout style="padding: 0 24px 24px">
-        <a-breadcrumb style="margin: 16px 0">
-         
-        </a-breadcrumb>
+      <a-layout >
+        <a-layout-header style="background: #fff; padding: 0">
+        <menu-unfold-outlined
+          v-if="collapsed"
+          class="trigger"
+          @click="() => (collapsed = !collapsed)"
+        />
+         <a-row>
+     <a-col :span="2" :offset="22">
+      <SettingOutlined style="margin-right:20px" />
+     <a-avatar>
+        <template #icon>
+          <UserOutlined />
+        </template>
+      </a-avatar>
+      </a-col>  
+   </a-row>
+       
+      </a-layout-header>
         <a-layout-content
-          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
+          :style="{ margin:'24px 16px',background: '#fff', padding: '24px', minHeight: '280px' }"
         >
           <router-view></router-view>
         </a-layout-content>
@@ -55,12 +59,14 @@
   </a-layout>
 </template>
 <script lang="ts">
-import { BankOutlined,AppstoreOutlined} from '@ant-design/icons-vue';
+import { BankOutlined,AppstoreOutlined,UserOutlined,SettingOutlined} from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
   components: {
         BankOutlined,
-    AppstoreOutlined
+    AppstoreOutlined,
+    UserOutlined,
+    SettingOutlined
   },
   setup() {
     return {
@@ -70,6 +76,11 @@ export default defineComponent({
       openKeys: ref<string[]>(['sub1']),
     };
   },
+  methods:{
+      handleHome(){
+          this.$router.push('/control')
+      }
+  }
 });
 </script>
 <style>
