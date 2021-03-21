@@ -83,7 +83,7 @@ import { BankOutlined,AppstoreOutlined,UserOutlined,LoginOutlined} from '@ant-de
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
   components: {
-        BankOutlined,
+    BankOutlined,
     AppstoreOutlined,
     UserOutlined,
     LoginOutlined

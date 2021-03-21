@@ -13,18 +13,15 @@
         @finish="handleFinish"
         @finishFailed="handleFinishFailed"
       >
-      
-        <a-form-item required has-feedback label="用户"  style="color:#fff" name="checkPass">
-          <a-input  v-model:value="formState.checkPass"  type="password" autocomplete="off" />
+        <a-form-item  has-feedback label="用户"  style="color:#fff" name="username">
+          <a-input    autocomplete="off"  v-model:value="formState.username"  />
         </a-form-item>
-      <a-form-item required has-feedback label="密码" name="pass">
-          <a-input v-model:value="formState.pass" type="password" autocomplete="off" />
+        <a-form-item  has-feedback label="密码" name="password">
+          <a-input   type="password"  v-model:value="formState.password" autocomplete="off"/>
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 14, offset: 9 }">
+        <a-form-item :wrapper-col="{ span: 14, offset: 9 }" >
           <a-button type="primary" html-type="submit">登录</a-button>
-          <!-- <a-button style="margin-left: 10px" @click="resetForm">Reset</a-button> -->
         </a-form-item>
-       
       </a-form>
        </a-col>
         </a-row>
@@ -32,83 +29,71 @@
       </a-layout>
 </template>
 <script lang="ts">
-import { RuleObject, ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
-import { defineComponent, reactive, ref, UnwrapRef } from 'vue';
+import { RuleObject } from 'ant-design-vue/es/form/interface';
+// import { useForm } from '@ant-design-vue/use';
+import { defineComponent, reactive, ref,UnwrapRef } from 'vue';
+
 interface FormState {
-  pass: string;
-  checkPass: string;
-  age: number | undefined;
+  username: string;
+  password: string;
 }
 export default defineComponent({
   setup() {
     const formRef = ref();
-    const formState: UnwrapRef<FormState> = reactive({
-      pass: '',
-      checkPass: '',
-      age: undefined,
+    const formState: UnwrapRef<FormState>=reactive({
+      username: '',
+      password: ''
     });
-    let checkAge = async (rule: RuleObject, value: number) => {
-      if (!value) {
-        return Promise.reject('Please input the age');
-      }
-      if (!Number.isInteger(value)) {
-        return Promise.reject('Please input digits');
-      } else {
-        if (value < 18) {
-          return Promise.reject('Age must be greater than 18');
-        } else {
-          return Promise.resolve();
-        }
-      }
-    };
-    let validatePass = async (rule: RuleObject, value: string) => {
+ 
+    // 用户名校验
+    let validateUsername = async (rule: RuleObject, value: string) => {
+     
       if (value === '') {
-        return Promise.reject('Please input the password');
+        return Promise.reject('请输入用户名');
       } else {
-        if (formState.checkPass !== '') {
-          formRef.value.validateField('checkPass');
-        }
+        // if (formState.username !== '') {
+        //   formRef.value.validateField('username');
+        // }
         return Promise.resolve();
       }
     };
-    let validatePass2 = async (rule: RuleObject, value: string) => {
-      if (value === '') {
-        return Promise.reject('Please input the password again');
-      } else if (value !== formState.pass) {
-        return Promise.reject("Two inputs don't match!");
+    //密码校验
+    let validatePassword = async (rule: RuleObject, value: string) => {
+    if (value === '') {
+        return Promise.reject('请输入密码');
       } else {
+        // if (formState.password !== '') {
+        //   formRef.value.validateField('password');
+        // }
         return Promise.resolve();
       }
     };
-
+//校验规则
     const rules = {
-      pass: [{ validator: validatePass, trigger: 'change' }],
-      checkPass: [{ validator: validatePass2, trigger: 'change' }],
-      age: [{ validator: checkAge, trigger: 'change' }],
+      username: [{ validator: validateUsername, trigger: 'change' }],
+      password: [{ validator: validatePassword, trigger: 'change' }]
     };
     const layout = {
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
     };
-    const handleFinish = (values: FormState) => {
-      console.log(values, formState);
-    };
-    const handleFinishFailed = (errors: ValidateErrorEntity<FormState>) => {
-      console.log(errors);
-    };
-    const resetForm = () => {
-      formRef.value.resetFields();
-    };
+  
+  
+  
     return {
       formState,
       formRef,
       rules,
       layout,
-      handleFinishFailed,
-      handleFinish,
-      resetForm,
+      
     };
   },
+  methods:{
+      handleFinish(values: FormState){
+         console.log("开始登录请求",values); 
+         this.axios.get('/apm/login')
+      }
+  }
 });
 </script>
 
@@ -130,7 +115,6 @@ export default defineComponent({
    .main{
       width:100vw;
     height:100vh;
-    background: url('https://static.sdbattery.com/inner/inner_login_bg.png') no-repeat;
     background-size:100% 100%;
     
    }
