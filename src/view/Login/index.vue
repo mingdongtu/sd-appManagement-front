@@ -32,7 +32,7 @@
 import { RuleObject } from 'ant-design-vue/es/form/interface';
 // import { useForm } from '@ant-design-vue/use';
 import { defineComponent, reactive, ref,UnwrapRef } from 'vue';
-
+import qs from "qs"
 interface FormState {
   username: string;
   password: string;
@@ -91,7 +91,8 @@ export default defineComponent({
   methods:{
       handleFinish(values: FormState){
          console.log("开始登录请求",values); 
-         this.axios.get('/apm/login')
+         const params = qs.stringify(values)
+         this.axios.get(`/apm/login?${params}`)
       }
   }
 });
