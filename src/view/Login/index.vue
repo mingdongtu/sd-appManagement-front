@@ -37,6 +37,11 @@ interface FormState {
   username: string;
   password: string;
 }
+// interface resData{
+//      code:number,
+//      data:{},
+//      msg:string
+// }
 export default defineComponent({
   setup() {
     const formRef = ref();
@@ -90,11 +95,11 @@ export default defineComponent({
       handleFinish(values: FormState){
          console.log("开始登录请求",values); 
          const params = qs.stringify(values)
-         this.axios.get(`/apm/login?${params}`).then(res=>{
+         this.axios.get(`/apm/login?${params}`).then((res:any)=>{
               console.log('返回数据',res)
-              // if(res&&res.code&&res.code===0){
-                  
-              // }
+              if(res&&res.code===1){ // 登录失败
+                    this.$router.push("/control")
+              }
          })
       }
   }
