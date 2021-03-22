@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import {useRouter} from "vue-router"
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
-import axios from 'axios'
+import axios from './service/index'
 import VueAxios from 'vue-axios'
 import router from "./router/index"
 import App from './App.vue';
@@ -26,5 +26,4 @@ const app = createApp(App)
 app.use(router)
 app.use(Antd)
 app.use(VueAxios, axios)
-// app.config.globalProperties.$axios=axios
 app.mount('#app')
