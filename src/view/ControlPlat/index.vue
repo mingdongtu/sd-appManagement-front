@@ -33,9 +33,11 @@
   </a-table>
 </template>
 <script lang="ts">
-import {  defineComponent, Ref, ref } from 'vue';
+import {  defineComponent, Ref, ref,onMounted } from 'vue';
 import {  AndroidOutlined,AppleOutlined} from '@ant-design/icons-vue';
 import {  } from 'lodash-es';
+import axios from 'axios';
+// import axios from 'axios';
 
 interface DataItem {
   key: string;
@@ -80,31 +82,21 @@ export default defineComponent({
         slots: { customRender: 'operation' },
       },
     ];
-    const dataSource: Ref<DataItem[]> = ref([
-      {
-        key: '0',
-        application_name: '合伙人APP',
-        edition: 32,
-        update_time: '2021-03-09 17:08:08',
-        download_type:"pgyer.com/agentBackendiOS",
-        application_type:'iOS',
-        application_logo:'https://cdn-app-icon.pgyer.com/5/f/5/6/0/5f560d647888ec264657eb6ae073a44d?x-oss-process=image/resize,m_lfit,h_60,w_60/format,jpg'
-      },
-      {
-        key: '1',
-        application_name: '合伙人APP',
-         edition: 33,
-        update_time: '2021-03-09 17:08:08',
-         download_type:"pgyer.com/agentBackendiOS",
-          application_type:'Android',
-            application_logo:'https://cdn-app-icon.pgyer.com/5/f/5/6/0/5f560d647888ec264657eb6ae073a44d?x-oss-process=image/resize,m_lfit,h_60,w_60/format,jpg'
-      },
+    let dataSource: Ref<DataItem[]> = ref([
+     
     ]);
+    onMounted(()=>{
+      axios.get("/apm/appList").then(res=>{
+            console.log('返回数据',res)
+            dataSource.value = res.data
+      }) 
+  })
     return {
       columns,
       dataSource
     };
   },
+  
   methods:{
        handleDetail(){
              this.$router.push("/appDetail")
