@@ -87,7 +87,6 @@ export default defineComponent({
     ]);
     onMounted(()=>{
       axios.get("/apm/appList").then(res=>{
-            console.log('返回数据',res)
             dataSource.value = res.data
       }) 
   })

@@ -41,9 +41,9 @@ export default defineComponent({
   setup() {
     const handleChange = (info: FileInfo) => {
       const status = info.file.status;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
+      // if (status !== 'uploading') {
+      //   console.log(info.file, info.fileList);
+      // }
       if (status === 'done') {
         message.success(`${info.file.name} file uploaded successfully.`);
       } else if (status === 'error') {

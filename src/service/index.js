@@ -8,7 +8,6 @@ axios.interceptors.response.use(function (response) {
 
   const {data} = response
   // 全局失败提示
-  console.log("响应拦截",data)
   if(data.code==0){ // 登录失败
     message.error(data.msg);    
   }else{

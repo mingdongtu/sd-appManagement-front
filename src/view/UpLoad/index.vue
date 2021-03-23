@@ -15,7 +15,6 @@ import { defineComponent,ref } from 'vue';
            },
            setup(){
                 const isUploaded = ref(false)
-                console.log('来来来',isUploaded.value)
                 return {
                     isUploaded
                 }

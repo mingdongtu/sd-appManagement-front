@@ -93,10 +93,8 @@ export default defineComponent({
   },
   methods:{
       handleFinish(values: FormState){
-         console.log("开始登录请求",values); 
          const params = qs.stringify(values)
          this.axios.get(`/apm/login?${params}`).then((res:any)=>{
-              console.log('返回数据',res)
               if(res&&res.code===1){ // 登录失败
                     this.$router.push("/control")
               }
