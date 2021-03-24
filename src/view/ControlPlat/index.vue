@@ -89,6 +89,7 @@ export default defineComponent({
       axios.get("/apm/appList").then(res=>{
             dataSource.value = res.data
       }) 
+      console.log(111)
   })
     return {
       columns,
