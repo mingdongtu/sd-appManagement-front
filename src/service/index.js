@@ -2,6 +2,11 @@
 import axios from 'axios'
 import { message } from 'ant-design-vue';
 // 添加响应拦截器
+/**
+ * 
+ *
+ * @interface
+ */
 axios.interceptors.response.use(function (response) {
   // 对响应数据做点什么
  

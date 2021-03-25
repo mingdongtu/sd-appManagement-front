@@ -35,7 +35,6 @@
 <script lang="ts">
 import {  defineComponent, Ref, ref,onMounted } from 'vue';
 import {  AndroidOutlined,AppleOutlined} from '@ant-design/icons-vue';
-import {  } from 'lodash-es';
 import axios from 'axios';
 // import axios from 'axios';
 

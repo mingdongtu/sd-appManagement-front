@@ -55,6 +55,7 @@ export default defineComponent({
       fileList: ref([]),
     };
   },
+  
 });
 </script>
 

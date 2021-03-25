@@ -7,8 +7,8 @@
            <div class='detail-top-1'>
               <img  src="https://cdn-app-icon.pgyer.com/5/f/5/6/0/5f560d647888ec264657eb6ae073a44d?x-oss-process=image/resize,m_lfit,h_120,w_120/format,jpg" alt="">
               <div>
-                 <div><span>搜电合伙人</span><span>内测版</span><FormOutlined style='font-size:12px' /></div>
-                 <div><AppleOutlined/> <span>适用于ios设备</span></div>
+                 <div><span>{{detail.application_name}}</span><span>内测版</span><FormOutlined style='font-size:12px' /></div>
+                 <div><AppleOutlined/> <span>适用于{{detail.application_name}}设备</span></div>
                  <p>Bundle ID:{{'com.soudian.AgentBackends'}}</p>
               </div>
            </div>
@@ -79,53 +79,29 @@
    </div>
 </template>
 <script lang='ts'>
-import { defineComponent } from 'vue';
+import { defineComponent,onMounted,Ref,ref} from 'vue';
+import axios from "axios";
 import { DownloadOutlined,EditFilled,FormOutlined,ClearOutlined,BookOutlined,AppleOutlined,RedoOutlined} from '@ant-design/icons-vue';
-const columns = [
-  { title: '版本信息', width: 100, dataIndex: 'edition_detail', key: 'edition_detail', fixed: 'left' },
-  { title: 'Build', width: 100, dataIndex: 'build_count', key: 'build_count', fixed: 'left' },
-  { title: '更新描述', dataIndex: 'update_describetion', key: '1', width: 200 },
-  { title: '下载次数', dataIndex: 'download_count', key: '2', width: 100 },
-  { title: '大小', dataIndex: 'packge_volume', key: '3', width: 100 },
-  { title: '状态', dataIndex: 'status', key: '4', width: 100 },
-  { title: '更新时间', dataIndex: 'update_time', key: '6', width: 150 },
-  { title: '审核状态', dataIndex: 'check_status', key: '7', width: 100 },
-  {
-    title: 'Action',
-    key: 'operation',
-    fixed: 'right',
-    width: 220,
-    slots: { customRender: 'action' },
-  },
-];
 
 interface DataItem {
   key: number;
-    edition_detail:string,
+    edition:string,
     build_count: Number,
-    update_describetion: string,
+    // update_describetion: string,
     download_count:Number,
-    packge_volume:Number,
-    status:string,
+    package_volume:Number,
+    // status:string,
     update_time:string,
     check_status:string
 }
+interface detailInfo{
+      application_name:string;
+      application_type:string;
+      application_logo:string;
 
-const data: DataItem[] = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i,
-    edition_detail: `Edrward ${i}`,
-    build_count: 32,
-    update_describetion: `London Park no. ${i}`,
-    download_count:10,
-    packge_volume:37.5,
-    status:"显示",
-    update_time:"2021-03-15 11：49",
-    check_status:"已通过"
-
-  });
 }
+
+
 
 export default defineComponent({
    components: {
@@ -137,12 +113,46 @@ export default defineComponent({
         AppleOutlined,
         RedoOutlined
   },
-  data() {
-    return {
-      data,
-      columns,
-    };
+  setup(){
+    const columns = [
+  { title: '版本信息', width: 100, dataIndex: 'edition', key: 'edition', fixed: 'left' },
+  { title: 'Build', width: 100, dataIndex: 'build_count', key: 'build_count', fixed: 'left' },
+  // { title: '更新描述', dataIndex: 'update_describetion', key: '1', width: 200 },
+  { title: '下载次数', dataIndex: 'download_count', key: '2', width: 100 },
+  { title: '大小', dataIndex: 'package_volume', key: '3', width: 100 },
+  // { title: '状态', dataIndex: 'status', key: '4', width: 100 },
+  { title: '更新时间', dataIndex: 'update_time', key: '6', width: 150 },
+  { title: '审核状态', dataIndex: 'check_status', key: '7', width: 100 },
+  {
+    title: 'Action',
+    key: 'operation',
+    fixed: 'right',
+    width: 220,
+    slots: { customRender: 'action' },
   },
+];
+   let detail:Ref<detailInfo> = ref({
+       application_name:'',
+       application_type:'',
+       application_logo:''
+   });
+
+    let data: Ref<DataItem[]> = ref([]);
+     
+      onMounted(()=>{
+           axios.get("/apm/appDetail").then(res=>{
+                console.log(res)
+                data.value = res.data.list || []
+                detail.value = res.data.detail||{}
+           })
+      })
+      return {
+         data,
+         columns,
+         detail
+      }
+  },
+  
   methods:{
      handleUpdate(){
           this.$router.push('/upLoad')
