@@ -5,11 +5,11 @@
         <a-layout >
       <a-layout-content style="background:rgb(243,245,247)">
            <div class='detail-top-1'>
-              <img  src="https://cdn-app-icon.pgyer.com/5/f/5/6/0/5f560d647888ec264657eb6ae073a44d?x-oss-process=image/resize,m_lfit,h_120,w_120/format,jpg" alt="">
+              <img src="{{detail.application_logo}}" alt="">
               <div>
                  <div><span>{{detail.application_name}}</span><span>内测版</span><FormOutlined style='font-size:12px' /></div>
                  <div><AppleOutlined/> <span>适用于{{detail.application_name}}设备</span></div>
-                 <p>Bundle ID:{{'com.soudian.AgentBackends'}}</p>
+                 <p>Bundle ID:{{detail.bundle_id}}</p>
               </div>
            </div>
       </a-layout-content>
@@ -26,12 +26,12 @@
       <a-descriptions  bordered >
     <a-descriptions-item label="App Key">c721e050e6da08d4f9a9d325b38dd4a7</a-descriptions-item>
     <a-descriptions-item label="应用介绍与更新说明">查看详情</a-descriptions-item>
-    <a-descriptions-item label="过期时间">2023-03-15</a-descriptions-item>
+    <a-descriptions-item label="过期时间">{{data[0].expiration_time}}</a-descriptions-item>
     <a-descriptions-item label="安装方式">公开 ( 长期有效 )</a-descriptions-item>
     <a-descriptions-item label="下载地址">pgyer.com/agentBackendiOS</a-descriptions-item>
     <a-descriptions-item label="下载二维码">
          <div class='size'>
-             <img style="width:30px;height:30px" src="https://www.pgyer.com/app/qrcode/agentBackendiOS" alt="">
+             <img style="width:30px;height:30px" src={{data[0].download_url}} alt="">
             <a style="font-size:12px;display:block;margin-top:12px">下载更多尺寸</a>
          </div>
     </a-descriptions-item>
@@ -98,6 +98,7 @@ interface detailInfo{
       application_name:string;
       application_type:string;
       application_logo:string;
+      bundle_id:string
 
 }
 
@@ -134,7 +135,8 @@ export default defineComponent({
    let detail:Ref<detailInfo> = ref({
        application_name:'',
        application_type:'',
-       application_logo:''
+       application_logo:'',
+       bundle_id:''
    });
 
     let data: Ref<DataItem[]> = ref([]);
