@@ -1,6 +1,7 @@
 <template>
   <a-upload-dragger
     v-model:fileList="fileList"
+    accept=".ipa,.apk"
     name="file"
     :multiple="true"
     method="post"
