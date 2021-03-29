@@ -51,7 +51,7 @@ export default defineComponent({
     const handleChange = (e) => {
     
        let formData = new FormData()
-        formData.append('file', e.file)
+        formData.append('file', JSON.stringify(e.file))
          console.log('🔥🔥',formData,formData.has('file'))
         if(formData.has('file')){
            axios({
