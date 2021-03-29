@@ -52,7 +52,7 @@ export default defineComponent({
     
        let formData = new FormData()
         formData.append('file', JSON.stringify(e.file))
-         console.log('🔥🔥',formData,formData.has('file'))
+         console.log('🔥🔥',e)
         if(formData.has('file')){
            axios({
           method: 'post',
