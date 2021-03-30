@@ -3,7 +3,7 @@
     v-model:fileList="fileList"
     accept=".ipa,.apk"
     name="file"
-    :multiple="true"
+    multiple="true"
     method="post"
     action="http://localhost:8080/apm/upload"
     @change="handleChange"
@@ -22,7 +22,7 @@
 import { InboxOutlined } from '@ant-design/icons-vue';
 // import { message } from 'ant-design-vue';
 import { defineComponent, ref } from 'vue';
-import axios from 'axios'
+// import axios from 'axios'
 
 // interface FileItem {
 //   uid: string;
@@ -51,22 +51,22 @@ export default defineComponent({
     }
     const handleChange = (e) => {
     
-       let formData = new FormData()
-        formData.append('file', JSON.stringify(e))
+      //  let formData = new FormData()
+      //   formData.append('file', JSON.stringify(e))
          console.log('🔥🔥',e)
-        if(formData.has('file')){
-           axios({
-          method: 'post',
-          url: '/apm/upload',
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          data: formData
-        }).then(res => {
-          console.log('res', res)
-        })
+      //   if(formData.has('file')){
+      //      axios({
+      //     method: 'post',
+      //     url: '/apm/upload',
+      //     headers: {
+      //       'Content-Type': 'multipart/form-data'
+      //     },
+      //     data: formData
+      //   }).then(res => {
+      //     console.log('res', res)
+      //   })
 
-        }
+      //   }
 
     };
     return {
