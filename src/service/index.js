@@ -7,6 +7,13 @@ import { message } from 'ant-design-vue';
  *
  * @interface
  */
+axios.interceptors.request.use(config=>{
+       const token = localStorage.getItem('token');
+       if(token){
+           config.headers.common['Authorization'] = 'Bear ' + token;
+       }
+       return config
+})
 axios.interceptors.response.use(function (response) {
   // 对响应数据做点什么
  

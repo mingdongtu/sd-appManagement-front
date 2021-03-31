@@ -96,7 +96,7 @@ export default defineComponent({
          const params = qs.stringify(values)
          this.axios.get(`/apm/login?${params}`).then((res:any)=>{
               if(res&&res.code===1){ // 登录失败
-                    this.$router.push("/control")
+                   this.$router.push("/control")  
               }
          })
       }
