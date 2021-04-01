@@ -95,7 +95,8 @@ export default defineComponent({
       handleFinish(values: FormState){
          const params = qs.stringify(values)
          this.axios.get(`/apm/login?${params}`).then((res:any)=>{
-              if(res&&res.code===1){ // 登录失败
+              if(res&&res.code===1){ // 登录成功
+                   localStorage.setItem('token',res.token)
                    this.$router.push("/control")  
               }
          })
