@@ -46,7 +46,7 @@
              <UserOutlined/>
              <span>基本资料</span>
           </div>
-          <div class='log-out'>
+          <div class='log-out' @click="handleLogOut">
             <LoginOutlined/>
             <span>退出登陆</span>
           </div>
@@ -100,6 +100,10 @@ export default defineComponent({
   methods:{
       handleHome(){
           this.$router.push('/control')
+      },
+      handleLogOut(){
+        localStorage.removeItem('token')
+        this.$router.push('/login')
       }
   }
 });
