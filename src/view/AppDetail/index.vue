@@ -26,7 +26,6 @@
       <a-descriptions  bordered >
     <a-descriptions-item label="App Key">c721e050e6da08d4f9a9d325b38dd4a7</a-descriptions-item>
     <a-descriptions-item label="应用介绍与更新说明">查看详情</a-descriptions-item>
-    <a-descriptions-item label="过期时间">{{data[0].expiration_time}}</a-descriptions-item>
     <a-descriptions-item label="安装方式">公开 ( 长期有效 )</a-descriptions-item>
     <a-descriptions-item label="下载地址">pgyer.com/agentBackendiOS</a-descriptions-item>
     <a-descriptions-item label="下载二维码">
@@ -50,9 +49,9 @@
       </a-tooltip>
      <a-tooltip placement="topLeft">
         <template #title>
-          <span>下载</span>
+          <span >下载</span>
         </template>
-        <a-button size="small" style='margin-right:5px'><DownloadOutlined /></a-button>
+        <a-button size="small" style='margin-right:5px' @click="handleDownload"><DownloadOutlined /></a-button>
       </a-tooltip>
       
       <a-tooltip placement="topLeft">
@@ -140,18 +139,22 @@ export default defineComponent({
    });
 
     let data: Ref<DataItem[]> = ref([]);
-     
+    const handleDownload = ()=>{
+          window.open("http://localhost:3005/apm/download")
+    }
       onMounted(()=>{
            axios.get("/apm/appDetail").then(res=>{
-                console.log(res)
+               
                 data.value = res.data.list || []
                 detail.value = res.data.detail||{}
+                 console.log('detail🔥',detail)
            })
       })
       return {
          data,
          columns,
-         detail
+         detail,
+         handleDownload
       }
   },
   

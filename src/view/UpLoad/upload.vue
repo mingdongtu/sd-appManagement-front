@@ -3,10 +3,11 @@
     v-model:fileList="fileList"
     accept=".ipa,.apk"
     name="file"
-    multiple="true"
+    :multiple="true"
     method="post"
-    action="http://localhost:8080/apm/upload"
+    action="http://localhost:8082/apm/upload"
     @change="handleChange"
+    :headers="headers"
     @beforeUpload="handleBeforeUpload"
   >
     <p class="ant-upload-drag-icon">
@@ -47,32 +48,21 @@ export default defineComponent({
            return new Promise((resolve)=>{
                 resolve(file)
            })
-          // return true
     }
     const handleChange = (e) => {
-    
-      //  let formData = new FormData()
-      //   formData.append('file', JSON.stringify(e))
-         console.log('🔥🔥',e)
-      //   if(formData.has('file')){
-      //      axios({
-      //     method: 'post',
-      //     url: '/apm/upload',
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data'
-      //     },
-      //     data: formData
-      //   }).then(res => {
-      //     console.log('res', res)
-      //   })
-
-      //   }
+        console.log(e)
 
     };
+    let token = localStorage.getItem('token')||''
+    const headers= ref({
+        authorization:`Bearer ${token}`
+    })
+    console.log('我的token',headers)
     return {
       handleChange,
       fileList: ref([]),
-      handleBeforeUpload
+      handleBeforeUpload,
+      headers
     };
   },
 });
