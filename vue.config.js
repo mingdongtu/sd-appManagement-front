@@ -1,3 +1,5 @@
+
+const path = require('path')
 module.exports = {
   devServer: {
     open: true,
@@ -18,26 +20,8 @@ module.exports = {
     }},
     chainWebpack:(config)=>{
          config.resolve.alias
-               .set("@",resolve('src'))  //设置路径别名
+               .set("@",path.resolve(__dirname,'src'))  //设置路径别名
     }
 
-  //  module: {
-  //   rules: [
-  //     {
-  //       test: /\.less$/,
-  //       loader: 'style-loader!css-loader!less-loader'
-  //     }
-  //   ]
-  // },
-  // css: {
-  //   loaderOptions: {
-  //     sass: {
-  //     },
-  //     less: {
-  //       lessOptions: {
-  //         javascriptEnabled: true,
-  //       },
-  //     },
-  //   },
-  // },
+ 
 }

@@ -27,10 +27,10 @@
     <a-descriptions-item label="App Key">c721e050e6da08d4f9a9d325b38dd4a7</a-descriptions-item>
     <a-descriptions-item label="应用介绍与更新说明">查看详情</a-descriptions-item>
     <a-descriptions-item label="安装方式">公开 ( 长期有效 )</a-descriptions-item>
-    <a-descriptions-item label="下载地址">pgyer.com/agentBackendiOS</a-descriptions-item>
+    <a-descriptions-item label="下载地址"><a href="#" @click='goDownload'>pgyer.com/agentBackendiOS</a></a-descriptions-item>
     <a-descriptions-item label="下载二维码">
          <div class='size'>
-             <img style="width:30px;height:30px" src={{data[0].download_url}} alt="">
+             <img style="width:30px;height:30px" :src='download_url' alt="">
             <a style="font-size:12px;display:block;margin-top:12px">下载更多尺寸</a>
          </div>
     </a-descriptions-item>
@@ -80,6 +80,7 @@
 <script lang='ts'>
 import { defineComponent,onMounted,Ref,ref} from 'vue';
 import axios from "axios";
+import QRCode from 'qrcode'
 import { DownloadOutlined,EditFilled,FormOutlined,ClearOutlined,BookOutlined,AppleOutlined,RedoOutlined} from '@ant-design/icons-vue';
 
 interface DataItem {
@@ -114,6 +115,7 @@ export default defineComponent({
         RedoOutlined
   },
   setup(){
+    console.log('上下文🔥🔥')
     const columns = [
   { title: '版本信息', width: 100, dataIndex: 'edition', key: 'edition', fixed: 'left' },
   { title: 'Build', width: 100, dataIndex: 'build_count', key: 'build_count', fixed: 'left' },
@@ -131,6 +133,7 @@ export default defineComponent({
     slots: { customRender: 'action' },
   },
 ];
+  
    let detail:Ref<detailInfo> = ref({
        application_name:'',
        application_type:'',
@@ -139,29 +142,44 @@ export default defineComponent({
    });
 
     let data: Ref<DataItem[]> = ref([]);
+    let download_url = ref('')
     const handleDownload = ()=>{
           window.open("http://localhost:3005/apm/download")
     }
+    
       onMounted(()=>{
            axios.get("/apm/appDetail").then(res=>{
-               
                 data.value = res.data.list || []
                 detail.value = res.data.detail||{}
-                 console.log('detail🔥',detail)
+              //生成跳转二维码
+             const path = `http://localhost:8082/download`;
+
+             QRCode.toDataURL(path).then(url=>{
+                    console.log('输出二维码',url)
+                download_url.value = url
+             }).catch(err=>{
+                 console.log(err)
+             })
            })
+          
       })
       return {
          data,
          columns,
          detail,
-         handleDownload
+         handleDownload,
+         download_url
+         
       }
   },
   
   methods:{
      handleUpdate(){
           this.$router.push('/upLoad')
-     }
+     },
+     goDownload(){
+           this.$router.push(`/download/${1}`)
+    }
   }
 });
 </script>

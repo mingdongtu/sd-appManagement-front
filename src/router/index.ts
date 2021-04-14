@@ -31,7 +31,7 @@ const routes = [
     component: Login
   },
   {
-    path:'/download',
+    path:'/download/:id',
     component:Download
 
   }
