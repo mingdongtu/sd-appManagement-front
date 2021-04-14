@@ -7,7 +7,7 @@ module.exports = {
     //以上的ip和端口是我们本机的;下面为需要跨域的
     proxy: {//配置跨域
         '/apm': {
-            target: 'http://localhost:3005/',//这里后台的地址模拟的;应该填写你们真实的后台接口
+            target: 'http://localhost:3005/',
             ws: true,
             changOrigin: true,//允许跨域
             // pathRewrite: {
@@ -15,11 +15,14 @@ module.exports = {
             // }
         }
         
-    }}
+    }},
+    chainWebpack:(config)=>{
+         config.resolve.alias
+               .set("@",resolve('src'))  //设置路径别名
+    }
 
   //  module: {
   //   rules: [
-  //     // 此处省略一万个字
   //     {
   //       test: /\.less$/,
   //       loader: 'style-loader!css-loader!less-loader'
